@@ -159,6 +159,16 @@ elif user_input=='r':
     config.read(config_fn)
     data_file = os.path.join(data_dir, config['DATA']['data_file'])
 
+# Create script directories
+if not os.path.exists('scripts'):
+    os.mkdir('scripts')
+if not os.path.exists('scripts/todo'):
+    os.mkdir('scripts/todo')
+if not os.path.exists('done/done'):
+    os.mkdir('scripts/todo')
+if not os.path.exists('scripts/stdout'):
+    os.mkdir('scripts/stdout')
+    
 # Create script file
 script_fn = os.path.join(cur_dir, 'scripts/todo', args.model_name+'.sh')
 with open(script_fn, 'w') as f:
