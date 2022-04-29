@@ -12,6 +12,8 @@ Unsupervised Learning to Perform Respiratory Motion Correction in PET Imaging
 
 -h5py: `pip install h5py`
 
+-configparser: `pip install configparser`
+
 ## Data download
 
 The data can be downloaded [here](https://zenodo.org/record/5851646) or possibly by just clicking this [link](https://zenodo.org/record/5851646/files/validation_data.zip?download=1).
