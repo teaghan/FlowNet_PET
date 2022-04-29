@@ -164,8 +164,8 @@ if not os.path.exists('scripts'):
     os.mkdir('scripts')
 if not os.path.exists('scripts/todo'):
     os.mkdir('scripts/todo')
-if not os.path.exists('done/done'):
-    os.mkdir('scripts/todo')
+if not os.path.exists('scripts/done'):
+    os.mkdir('scripts/done')
 if not os.path.exists('scripts/stdout'):
     os.mkdir('scripts/stdout')
     
