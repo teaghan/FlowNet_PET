@@ -100,8 +100,8 @@ def parseArguments():
 
 # Directories
 cur_dir = os.path.dirname(os.path.realpath(__file__))
-data_dir = os.path.join(cur_dir, 'xcat_3D_data')
-training_script = os.path.join(cur_dir, 'train_flownet_xcat3D_PET.py')
+data_dir = os.path.join(cur_dir, 'data')
+training_script = os.path.join(cur_dir, 'train_flownet_pet.py')
 
 # Read command line arguments
 args = parseArguments()
@@ -163,10 +163,9 @@ elif user_input=='r':
 script_fn = os.path.join(cur_dir, 'scripts/todo', args.model_name+'.sh')
 with open(script_fn, 'w') as f:
     f.write('#!/bin/bash\n\n')
-    f.write('# Load pytorch\n')
-    f.write('module load python/3.7\n')
-    f.write('source /home/obriaint/project/obriaint/torchmed/bin/activate\n')
-    f.write('module load hdf5/1.10.6\n\n')
+    f.write('# Module loads\n')
+    for line in open('module_loads.txt', 'r').readlines():
+        f.write(line+'\n')
     f.write('# Copy files to slurm directory\n')
     f.write('cp %s $SLURM_TMPDIR\n\n' % (os.path.join(data_dir, data_file)))
     f.write('# Run training\n')

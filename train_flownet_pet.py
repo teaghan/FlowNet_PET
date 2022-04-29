@@ -30,7 +30,7 @@ config_dir = os.path.join(cur_dir, 'configs/')
 model_dir = os.path.join(cur_dir, 'models/')
 progress_dir = os.path.join(cur_dir, 'progress/')
 if args.data_dir is None:
-    data_dir = os.path.join(cur_dir, 'xcat_3D_data/')
+    data_dir = os.path.join(cur_dir, 'data/')
 
 # Model configuration
 config = configparser.ConfigParser()
