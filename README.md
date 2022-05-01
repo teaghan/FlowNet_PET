@@ -24,7 +24,7 @@ Once downloaded, unzip the file and place each of the subdirectories within the 
 
 ### Option 1
 
-1. The model architecture and hyper-parameters are set within configuration file in [the config directory](./configs). For instance, I have already created the [original FlowNet-PET configuration file](./configs/fnp_1.ini).
+1. The model architecture and hyper-parameters are set within configuration file in [the config directory](./configs). For instance, I have already created the [original FlowNet-PET configuration file](./configs/fnp_1.ini). You can copy this file under a new name and change whichever parameters you choose.
   
 2. If you were to create a `fnp_2.ini` in Step 1, to train this model,  you can run `python train_flownet_pet.py fnp_2 -v 500 -ct 15.00` which will train your model displaying the progress every 500 batch iterations and saves the model every 15 minutes. This same command will continue training the network if you already have the model saved in the [model directory](./models) from previous training. 
 
