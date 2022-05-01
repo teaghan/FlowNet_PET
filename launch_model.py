@@ -36,7 +36,7 @@ def parseArguments():
     # Config params
     parser.add_argument("-fn", "--data_file", 
                         help="Data file for training.", 
-                        type=str, default='xcat_PET_samples_o6.h5')   
+                        type=str, default='xcat_training_set.h5')   
     parser.add_argument("-bs", "--batchsize", 
                         help="Training batchsize.", 
                         type=int, default=1)
