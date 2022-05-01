@@ -32,7 +32,7 @@ Once downloaded, unzip the file and place each of the subdirectories within the 
 
 Alternatively, if operating on compute-canada, you can use the `launch_model.py` script to simultaneously create a new configuration file and launch a bunch of jobs to train your model. 
 
-1. Change the [module loads file](./module_loads.txt) to include the lines necessary to load your own environment with pytorch, etc. 
+1. Change the [load modules file](./module_loads.txt) to include the lines necessary to load your own environment with pytorch, etc. 
 2. Then, to copy the [original FlowNet-PET configuration](./configs/fnp_1.ini), but use, say, a loss weight of 500 for the invertibility loss term, you could use the command `python launch_model.py fnp_2 -iw 500`. This will launch twelve 3-hour jobs on the GPU nodes to finish the training. You can checkout the other parameters that can be changed with the command `python launch_model.py -h`.
 
 ### Analysis notebooks
