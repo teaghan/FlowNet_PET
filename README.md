@@ -22,5 +22,17 @@ Once downloaded, unzip the file and place each of the subdirectories within the 
 
 ## Training the Network
 
+### Option 1
+
+1. The model architecture and hyper-parameters are set within configuration file in [the config directory](./configs). For instance, I have already created the [original FlowNet-PET configuration file](./configs/fnp_1.ini).
+  
+2. If you were to create a `fnp_2.ini` in Step 1, to train this model,  you can run `python train_flownet_pet.py fnp_2 -v 500 -ct 15.00` which will train your model displaying the progress every 500 batch iterations and saves the model every 15 minutes. This same command will continue training the network if you already have the model saved in the [model directory](./models) from previous training. 
+
+### Option 2
+
+Alternatively, if operating on compute-canada, you can use the `launch_model.py` script to simultaneously create a new configuration file and launch a bunch of jobs to train your model. 
+
+1. Change the `module_loads.txt` file to include the lines necessary to load your own environment with pytorch, etc. 
+2. Then, to copy the [original FlowNet-PET configuration](./configs/fnp_1.ini), but use, say, a loss weight of 500 for the invertibility loss term, you could use the command `python launch_model.py fnp_2 -iw 500`. This will launch twelve 3-hour jobs on the GPU nodes to finish the training. You can checkout the other parameters that can be changed with the command `python launch_model.py -h`.
 
 ### Analysis notebooks
