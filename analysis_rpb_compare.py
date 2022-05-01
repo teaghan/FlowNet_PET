@@ -586,7 +586,6 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt, tot_counts_rb,
     ax2.set_yticks([4e4,6e4,8e4])
     #ax2.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
     ax2.set_ylim(*y_lims[1])
-    print(tot_counts_gt)
     scientific_notation_y(ax2, 1)
     
     if cov:

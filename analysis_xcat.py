@@ -40,9 +40,7 @@ def plot_progress(losses, y_lims=[(0,1),(0,100),(0,40),(0,100)], x_lim=(0,1.5e6)
                  label=r'Validation',  c='k')
     ax2.set_ylabel(r'Loss',fontsize=fontsize)
     ax2.set_ylim(*y_lims[1])
-        
-    
-    print('Grond truth flow Distance: %0.3f' % (np.mean(losses['val_gt_flow'][-4:])))
+            
     ax3.set_title('(c) Ground-truth Flow', fontsize=fontsize)
     ax3.plot(losses['batch_iters'], losses['val_gt_flow'],
              label=r'Validation',  c='k')
@@ -492,9 +490,7 @@ def plot_flow_pred(frame1, frame2, pred_flow,
     # Invert flows to make them more intuitive
     pred_flow*=-1
     target_flow*=-1
-    
-    print(np.min(target_flow), np.max(target_flow))
-                
+                    
     # Create outer figure
     fig = plt.figure(figsize=(12, 4.5))
     gs0 = gridspec.GridSpec(2, 17, figure=fig)
