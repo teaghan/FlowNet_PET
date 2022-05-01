@@ -36,3 +36,7 @@ Alternatively, if operating on compute-canada, you can use the `launch_model.py`
 2. Then, to copy the [original FlowNet-PET configuration](./configs/fnp_1.ini), but use, say, a loss weight of 500 for the invertibility loss term, you could use the command `python launch_model.py fnp_2 -iw 500`. This will launch twelve 3-hour jobs on the GPU nodes to finish the training. You can checkout the other parameters that can be changed with the command `python launch_model.py -h`.
 
 ### Analysis notebooks
+
+1. Checkout the [Testing on XCAT Frames notebook](./Testing_on_XCAT_Frames.ipynb) to evaluate the trained network on raw XCAT PET frames and compare the results to images with and without motion.
+2. Checkout the [Comparing Against RPB notebook](./Comparing_Against_RPB.ipynb) to evaluate the trained network on XCAT PET data that is binned based on a clinical breathing trace. This notebook will compare the results against images produce by the retrospective phase binning method, which requires a scan duration that is six times longer.
+3. Checkout the [Comparisons using MC Data notebook](./Comparisons_using_MC_Data.ipynb) to evaluate the trained network on Monte Carlo PET data that is binned based on a clinical breathing trace. This notebook will compare the results against images produce by the retrospective phase binning method, which requires a scan duration that is six times longer.
