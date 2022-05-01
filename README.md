@@ -27,7 +27,7 @@ Unsupervised Learning to Perform Respiratory Motion Correction in PET Imaging
 
 ## Data download
 
-The test sets can be downloaded [here](https://zenodo.org/record/5851646) and the training set [here](https://zenodo.org/record/5851646).
+The test sets can be downloaded [here](https://zenodo.org/record/6510089) and the training set (still to come).
 
 Once downloaded, unzip the files and place each file in the [data directory](./data/). For instance, after doing this you should have a file `FlowNet_PET/data/xcat_frames_test_set.h5`.
 
