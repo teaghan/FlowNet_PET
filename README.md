@@ -5,6 +5,10 @@
 # FlowNet-PET
 Unsupervised Learning to Perform Respiratory Motion Correction in PET Imaging
 
+<p align="left">
+  <img width="966" height="528" src="./figures/fig10.png">
+</p>
+
 ## Dependencies
 
 -[PyTorch](http://pytorch.org/): `pip install torch torchvision`
@@ -16,9 +20,9 @@ Unsupervised Learning to Perform Respiratory Motion Correction in PET Imaging
 
 ## Data download
 
-The data can be downloaded [here](https://zenodo.org/record/5851646) or possibly by just clicking this [link](https://zenodo.org/record/5851646/files/validation_data.zip?download=1).
+The test sets can be downloaded [here](https://zenodo.org/record/5851646) and the training set [here](https://zenodo.org/record/5851646).
 
-Once downloaded, unzip the file and place each of the subdirectories within the [patient directory](./patients/). For instance, after doing this you should have a directory tree `PET_MonteCarlo/patients/nema_simu`.
+Once downloaded, unzip the files and place each file in the [data directory](./data/). For instance, after doing this you should have a file `FlowNet_PET/data/xcat_frames_test_set.h5`.
 
 ## Training the Network
 
