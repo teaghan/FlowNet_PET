@@ -13,7 +13,7 @@ Unsupervised Learning to Perform Respiratory Motion Correction in PET Imaging
 <p align="center">
   <img width="966" height="528" src="./figures/fig10.png">
 </p>
-<p align="center"><b>Figure 1</b>: The convolutional neural network architecture.<p align="center"> 
+<p align="center"><b>Figure 2</b>: The convolutional neural network architecture.<p align="center"> 
 
 
 ## Dependencies
