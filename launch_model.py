@@ -101,6 +101,7 @@ def parseArguments():
 # Directories
 cur_dir = os.path.dirname(os.path.realpath(__file__))
 data_dir = os.path.join(cur_dir, 'data')
+model_dir = os.path.join(cur_dir, 'models/')
 training_script = os.path.join(cur_dir, 'train_flownet_pet.py')
 
 # Read command line arguments
@@ -154,6 +155,12 @@ elif user_input=='o':
         config.write(configfile)
         
     data_file = args.data_file
+    
+    # Delete existing model file
+    model_filename =  os.path.join(model_dir, args.model_name+'.pth.tar')
+    if os.path.exists(model_filename):
+        os.remove(model_filename)
+        
 elif user_input=='r':
     config = configparser.ConfigParser()
     config.read(config_fn)
