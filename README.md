@@ -6,7 +6,7 @@
 Unsupervised Learning to Perform Respiratory Motion Correction in PET Imaging
 
 <p align="center">
-  <img width="2360" height="584" src="./figures/fig1.png">
+  <img width="944" height="234" src="./figures/fig1.png">
 </p>
 <p align="center"><b>Figure 1</b>: The FlowNet-PET framework.<p align="center"> 
 
