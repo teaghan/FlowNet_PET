@@ -111,6 +111,13 @@ class XCAT3DDataset(torch.utils.data.Dataset):
 
         return {'input_img':input_img.unsqueeze(0), 'target_img':target_img.unsqueeze(0), 'loss_weight': loss_weight}
 
+def create_normalize(x_mean, x_std):
+    
+    def normalize(img):
+        return (img - x_mean) / x_std
+    
+    return normalize
+    
 def charbonnier(x, alpha=0.25, epsilon=1.0e-9):
     return torch.pow(torch.pow(x, 2) + epsilon**2, alpha)
 

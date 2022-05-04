@@ -216,7 +216,9 @@ def train_network(model, optimizer, lr_scheduler, cur_iter):
                             'losses': losses,
                             'optimizer' : optimizer.state_dict(),
                             'lr_scheduler' : lr_scheduler.state_dict(),
-                            'model' : model.state_dict()}, 
+                            'model' : model.state_dict(),
+                            'x_mean': val_dataset.x_mean,
+                            'x_std': val_dataset.x_std}, 
                             model_filename)
                 
                 cp_start_time = time.time()

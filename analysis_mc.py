@@ -318,11 +318,11 @@ def load_phantoms(h5_fn, pat_num, AP_expansion, tgt_bin, tot_counts,
     return (tgt_img, inp_imgs, gt_img, rb_img, 
             rb_phase, slice_width, pixel_width, lesn_diameter, tumour_loc)
 
-def predict_flow(model, val_dataset, input_img, target_img):
+def predict_flow(model, normalize, input_img, target_img):
     
     # Normalize
-    input_img = val_dataset.normalize(input_img)
-    target_img = val_dataset.normalize(target_img)
+    input_img = normalize(input_img)
+    target_img = normalize(target_img)
     
     # Run model
     flow_predictions = model.predictor(torch.cat((input_img, 
@@ -331,7 +331,7 @@ def predict_flow(model, val_dataset, input_img, target_img):
     # Return high-res flow
     return flow_predictions[0]
 
-def apply_correction(model, input_imgs, target_img, avg_counts, device, val_dataset):
+def apply_correction(model, input_imgs, target_img, avg_counts, device, normalize):
     
     model.eval()
 
@@ -360,7 +360,7 @@ def apply_correction(model, input_imgs, target_img, avg_counts, device, val_data
         target_img = target_img * torch.sum(input_img)/torch.sum(target_img)
         
         # Predict flow
-        flow = predict_flow(model, val_dataset, input_img, target_img)
+        flow = predict_flow(model, normalize, input_img, target_img)
 
         # Apply flow to original input img
         output_img = model.warp_frame(flow, input_img, interp_mode='nearest')

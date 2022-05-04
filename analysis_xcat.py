@@ -134,11 +134,11 @@ def load_phantoms(h5_fn, pat_num, AP_expansion, lesn_diameter=None):
     
     return tgt_img, inp_imgs, tumour_loc, gt_flows, gt_flow_masks
 
-def predict_flow(model, val_dataset, input_img, target_img):
+def predict_flow(model, normalize, input_img, target_img):
     
     # Normalize
-    input_img = val_dataset.normalize(input_img)
-    target_img = val_dataset.normalize(target_img)
+    input_img = normalize(input_img)
+    target_img = normalize(target_img)
     
     # Run model
     flow_predictions = model.predictor(torch.cat((input_img, 
@@ -148,7 +148,7 @@ def predict_flow(model, val_dataset, input_img, target_img):
     return flow_predictions[0]
 
 def apply_correction(model, input_imgs, target_img, avg_counts, n_samples, input_lsns, target_lsn, 
-                     device, val_dataset):
+                     device, normalize):
     
     model.eval()
     
@@ -190,7 +190,7 @@ def apply_correction(model, input_imgs, target_img, avg_counts, n_samples, input
         target_sample = target_sample * torch.sum(input_img)/torch.sum(target_sample)
         
         # Predict flow
-        flow = predict_flow(model, val_dataset, input_img, target_sample)
+        flow = predict_flow(model, normalize, input_img, target_sample)
         pred_flows.append(flow[0].data.numpy())
 
         # Apply flow to original input img and mask
