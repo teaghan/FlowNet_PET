@@ -37,7 +37,7 @@ Once downloaded, unzip the files and place each file in the [data directory](./d
   
 To install from the command line:
   
-  `pip3 install zenodo_get`
+  `pip install zenodo_get`
   
   `zenodo_get 6510089`
   
