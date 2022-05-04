@@ -39,9 +39,9 @@ To install from the command line:
   
   - install file downloader: `pip install zenodo_get`
   
-  - download test sets:`zenodo_get 6510089`
+  - download the test sets:`zenodo_get 6510089`
   
-  - download training set:`zenodo_get 6510358` (this file is around 50GB and not necessary for the analysis)
+  - download the training set:`zenodo_get 6510358` (this file is around 50GB and not necessary for the analysis)
   
 Once downloaded, unzip the files and place each file in the [data directory](./data/). For instance, after doing this you should have the file path `FlowNet_PET/data/xcat_frames_test_set.h5`.
 
