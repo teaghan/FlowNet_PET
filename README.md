@@ -48,6 +48,7 @@ To install from the command line:
         `unzip FlowNetPET_test_sets.zip`
   
   - download the training set (this file is around 50GB and not necessary for the analysis):
+  
         `cd data/`
   
         `python -m zenodo_get 6510358`
