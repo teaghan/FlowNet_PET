@@ -1,14 +1,20 @@
+import configparser
 import numpy as np
 import torch
 import os
 import h5py
-import configparser
-
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as lines
+
 #plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
+
+#plt.rcParams["font.family"] = "serif"
+#plt.rcParams["font.serif"] = "Nimbus Roman"
+#plt.rcParams["font.weight"] = "heavy"
+
+#plt.rcParams['font.family'] = ['Arial', 'serif']
                   
 def subplot_3D_profile(img, gs0_seg, vmin=0, vmax=75, centre=[31,100,100],
                         spacing=np.array([2, 4, 4]), draw_lines=True,

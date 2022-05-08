@@ -9,7 +9,13 @@ import matplotlib.lines as lines
 
 #plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
-                  
+
+#plt.rcParams["font.family"] = "serif"
+#plt.rcParams["font.serif"] = "Nimbus Roman"
+#plt.rcParams["font.weight"] = "heavy"
+
+#plt.rcParams['font.family'] = ['Arial', 'serif']
+
 from scipy.signal import argrelextrema
 
 def load_phantoms(h5_fn, pat_num, AP_expansion, lesn_diameter):

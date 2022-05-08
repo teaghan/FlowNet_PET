@@ -22,7 +22,7 @@ def parseArguments():
                         type=float, default=15)
     parser.add_argument("-n", "--num_runs", 
                         help="Number of jobs to run for this simulation.", 
-                        type=int, default=12)
+                        type=int, default=10)
     parser.add_argument("-acc", "--account", 
                         help="Compute Canada account to run jobs under.", 
                         type=str, default='def-bazalova')

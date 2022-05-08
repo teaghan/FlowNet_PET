@@ -10,6 +10,12 @@ import matplotlib.lines as lines
 #plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 
+#plt.rcParams["font.family"] = "serif"
+#plt.rcParams["font.serif"] = "Nimbus Roman"
+#plt.rcParams["font.weight"] = "heavy"
+
+#plt.rcParams['font.family'] = ['Arial', 'serif']
+
 def plot_progress(losses, y_lims=[(0,1),(0,100),(0,40),(0,100)], x_lim=(0,1.5e6), 
                   fontsize=18, savename=None):
     
@@ -23,9 +29,9 @@ def plot_progress(losses, y_lims=[(0,1),(0,100),(0,40),(0,100)], x_lim=(0,1.5e6)
     ax2 = plt.subplot(gs[1])
     ax3 = plt.subplot(gs[2])
     
-    axs = [ax1, ax2, ax3 ]
+    axs = [ax1, ax2, ax3]
     
-    ax1.set_title('(a) Photometric', fontsize=fontsize)
+    ax1.set_title('(a) Photometric Loss', fontsize=fontsize)
     ax1.plot(losses['batch_iters'], losses['train_photo_loss'],
              label=r'Training', c='r')
     ax1.plot(losses['batch_iters'], losses['val_photo_loss'],
@@ -33,20 +39,21 @@ def plot_progress(losses, y_lims=[(0,1),(0,100),(0,40),(0,100)], x_lim=(0,1.5e6)
     ax1.set_ylabel('Loss',fontsize=fontsize)
     ax1.set_ylim(*y_lims[0])
     
-    ax2.set_title(r'(b) Invertibility', fontsize=fontsize)
+    ax2.set_title(r'(b) Invertibility Loss', fontsize=fontsize)
     ax2.plot(losses['batch_iters'], losses['train_inv_loss'],
                  label=r'Training',  c='r')
     ax2.plot(losses['batch_iters'], losses['val_inv_loss'],
                  label=r'Validation',  c='k')
     ax2.set_ylabel(r'Loss',fontsize=fontsize)
     ax2.set_ylim(*y_lims[1])
+    ax2.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
             
-    ax3.set_title('(c) Ground-truth Flow', fontsize=fontsize)
+    ax3.set_title('(c) Optical Flow Residual', fontsize=fontsize)
     ax3.plot(losses['batch_iters'], losses['val_gt_flow'],
              label=r'Validation',  c='k')
     ax3.set_ylabel('MAE',fontsize=fontsize)
-    ax3.set_ylim(*y_lims[2])
-    axs.append(ax3)
+    ax3.set_ylim(*y_lims[2])    
+    ax3.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
     
     for i, ax in enumerate(axs):
         ax.set_xlim(x_lim[0], x_lim[1])
@@ -531,7 +538,7 @@ def plot_flow_pred(frame1, frame2, pred_flow,
     cb1.set_label('Counts', fontsize=fontsize, rotation=90)
     
     cb2 = plt.colorbar(flow_tgt_plot, cax=cax2, ticks=[flow_min, 0, flow_max])
-    cb2.ax.set_yticklabels(['< %0.1f'%flow_min, '0', '> %0.1f'%flow_max])
+    cb2.ax.set_yticklabels(['< %i'%np.round(flow_min), '0', '> %i'%np.round(flow_max)])
     cb2.ax.tick_params(labelsize=small_fontsize)
     cb2.set_label('Shift (mm)', fontsize=fontsize, rotation=90)
     
