@@ -224,6 +224,17 @@ def train_network(model, optimizer, lr_scheduler, cur_iter):
                 cp_start_time = time.time()
                 
             if cur_iter>(total_batch_iters*batchsize):
+                print('Saving network...')
+
+                torch.save({'batch_iters': cur_iter,
+                            'losses': losses,
+                            'optimizer' : optimizer.state_dict(),
+                            'lr_scheduler' : lr_scheduler.state_dict(),
+                            'model' : model.state_dict(),
+                            'x_mean': val_dataset.x_mean,
+                            'x_std': val_dataset.x_std}, 
+                            model_filename)
+                                
                 break
                 
 # Run the training
