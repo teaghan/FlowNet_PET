@@ -3,18 +3,18 @@ import numpy as np
 import torch
 import os
 import h5py
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as lines
 
-#plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
-
-#plt.rcParams["font.family"] = "serif"
-#plt.rcParams["font.serif"] = "Nimbus Roman"
-#plt.rcParams["font.weight"] = "heavy"
-
-#plt.rcParams['font.family'] = ['Arial', 'serif']
+plt.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ['New Century Schoolbook'],
+    "font.size": 10,
+})
+matplotlib.rcParams['text.latex.preamble'] = [r'\boldmath']
 
 from scipy.signal import argrelextrema
 
@@ -499,7 +499,7 @@ def plot_metric_comparison(x_data, tot_counts_gt, tot_counts_rb,
     plt.tight_layout()
     plt.subplots_adjust(top=0.77)
     if savename is not None:
-        plt.savefig(savename, transparent=True, dpi=60, bbox_inches='tight', pad_inches=0.05)
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
         
     plt.show()
     
@@ -523,10 +523,10 @@ def scientific_notation_y(ax, decimals=1):
         v = v * 10**exp
     v = np.around(v, decimals)
     ax.annotate(r'1e' + sign + str(exp), xycoords='axes fraction',
-                xy=(0, 0), xytext=(0, 1.01), size=14)
+                xy=(0, 0), xytext=(0, 1.01), size=10)
     ax.set_yticklabels(v)
     return
-    
+
 def plot_metric_comparison_vert(x_data, tot_counts_gt, tot_counts_rb, 
                            tot_counts_orig, tot_counts_corr, 
                            snr_gt, snr_rb, snr_orig, snr_corr, 
@@ -567,7 +567,7 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt, tot_counts_rb,
     iou_perc_improv_fnp = 100*(1-iou_diff_corr / iou_diff_orig)
     iou_perc_improv_rb = 100*(1-iou_diff_rb / iou_diff_orig)
 
-    fig = plt.figure(figsize=(9,9))
+    fig = plt.figure(figsize=(7,7))
 
     gs = gridspec.GridSpec(3, 1)
 
@@ -577,17 +577,17 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt, tot_counts_rb,
     
     ax1.set_title('(a) Intersection over Union', fontsize=fontsize)
     ax1.plot(x_data, iou_gt, c='gray', ls='--')
-    ax1.scatter(x_data, iou_orig, c='k', s=70)
-    ax1.scatter(x_data, iou_corr, color="none", edgecolor="indianred", linewidths=3, s=120)
-    ax1.scatter(x_data, iou_rb, marker='x', c='g', linewidths=3, s=70)
+    ax1.scatter(x_data, iou_orig, c='k', s=50)
+    ax1.scatter(x_data, iou_corr, color="none", edgecolor="indianred", linewidths=3, s=90)
+    ax1.scatter(x_data, iou_rb, marker='x', c='g', linewidths=3, s=50)
     ax1.set_ylabel('Ratio', fontsize=fontsize)
     ax1.set_ylim(*y_lims[0])
     
     ax2.set_title('(b) Total Counts', fontsize=fontsize)
     tgt_line, = ax2.plot(x_data, tot_counts_gt, c='gray', ls='--')
-    orig_dots = ax2.scatter(x_data, tot_counts_orig, c='k', s=70)
-    corr_dots = ax2.scatter(x_data, tot_counts_corr, color="none", edgecolor="indianred", linewidths=3, s=120)
-    rb_dots = ax2.scatter(x_data, tot_counts_rb, marker='x', c='g', linewidths=3, s=70)
+    orig_dots = ax2.scatter(x_data, tot_counts_orig, c='k', s=50)
+    corr_dots = ax2.scatter(x_data, tot_counts_corr, color="none", edgecolor="indianred", linewidths=3, s=90)
+    rb_dots = ax2.scatter(x_data, tot_counts_rb, marker='x', c='g', linewidths=3, s=50)
     ax2.set_ylabel('Counts',fontsize=fontsize)
     ax2.set_yticks([4e4,6e4,8e4])
     #ax2.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
@@ -599,9 +599,9 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt, tot_counts_rb,
     else:
         ax3.set_title('(c) Signal-to-Noise', fontsize=fontsize)
     ax3.plot(x_data, snr_gt, c='gray', ls='--')
-    ax3.scatter(x_data, snr_orig, c='k', s=70)
-    ax3.scatter(x_data, snr_corr, color="none", edgecolor="indianred", linewidths=3, s=120)
-    ax3.scatter(x_data, snr_rb, marker='x', c='g', linewidths=3, s=70)
+    ax3.scatter(x_data, snr_orig, c='k', s=50)
+    ax3.scatter(x_data, snr_corr, color="none", edgecolor="indianred", linewidths=3, s=90)
+    ax3.scatter(x_data, snr_rb, marker='x', c='g', linewidths=3, s=50)
     ax3.set_ylabel('Ratio',fontsize=fontsize)
     ax3.set_ylim(*y_lims[2])
     
@@ -631,7 +631,7 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt, tot_counts_rb,
     plt.tight_layout()
     plt.subplots_adjust(top=0.76, hspace=1)
     if savename is not None:
-        plt.savefig(savename, transparent=True, dpi=60, bbox_inches='tight', pad_inches=0.05)
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
         
     plt.show()
     
@@ -640,7 +640,7 @@ def plot_breath_binning(breath_time, breath_amp,
                         n_bins=10,
                         x_lim=(0,60), y_lim=(0,1.2), fontsize=18, savename=None):
 
-    fig = plt.figure(figsize=(8,6))
+    fig = plt.figure(figsize=(7,5))
 
     gs = gridspec.GridSpec(2, 1)
 
@@ -651,7 +651,7 @@ def plot_breath_binning(breath_time, breath_amp,
     for j, recon_ph in enumerate(np.linspace(0,1,len(recon_phase_indices)+1)[:-1]):
         #if (j<5) or (j>20):
         ax1.scatter(breath_time[breath_recon_phase==recon_ph], breath_amp[breath_recon_phase==recon_ph],
-                   s=10, label='%i'% (j+1))
+                   s=8, label='%i'% (j+1))
     ax1.legend(ncol=3, fontsize=0.72*fontsize)
     
     # Amplitude bins based on patient min and max breathing
@@ -664,7 +664,7 @@ def plot_breath_binning(breath_time, breath_amp,
     for j, (start, end) in enumerate(zip(start_bin, end_bin)):
         indices = np.where((breath_amp>=start)& (breath_amp<end))[0]
         ax2.scatter(breath_time[indices], breath_amp[indices],
-                   s=10, label='%i'% (j+1))
+                   s=8, label='%i'% (j+1))
     ax2.legend(ncol=5, fontsize=0.72*fontsize)
 
     
@@ -681,6 +681,30 @@ def plot_breath_binning(breath_time, breath_amp,
 
     plt.tight_layout()
     if savename is not None:
-        plt.savefig(savename, transparent=True, dpi=60, bbox_inches='tight', pad_inches=0.05)
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
+        
+    plt.show()
+    
+def plot_breath_bins(breath_time, breath_amp, bin1, bin2,
+                     x_lim=(0,60), y_lim=(0,1.2), fontsize=18, savename=None):
+
+    fig = plt.figure(figsize=(7,4))
+
+    gs = gridspec.GridSpec(1, 1)
+
+    ax1 = plt.subplot(gs[0,0])
+    
+    ax1.plot(breath_time, breath_amp)
+    ax1.fill_between([breath_time[0], breath_time[-1]], bin1[0], bin1[1], color='r', alpha=0.2)
+    ax1.fill_between([breath_time[0], breath_time[-1]], bin2[0], bin2[1], color='g', alpha=0.2)
+
+    ax1.set_ylabel('Amplitude', fontsize=fontsize)
+    ax1.set_xlabel('Time', fontsize=fontsize)
+    ax1.tick_params(labelleft=False, labelbottom=False)
+    ax1.set_xlim(x_lim)
+    ax1.set_ylim(y_lim)
+
+    if savename is not None:
+        plt.savefig(savename, transparent=False, dpi=60, bbox_inches='tight', pad_inches=0.05)
         
     plt.show()

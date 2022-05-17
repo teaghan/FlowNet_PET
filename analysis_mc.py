@@ -3,18 +3,18 @@ import numpy as np
 import torch
 import os
 import h5py
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as lines
 
-#plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
-
-#plt.rcParams["font.family"] = "serif"
-#plt.rcParams["font.serif"] = "Nimbus Roman"
-#plt.rcParams["font.weight"] = "heavy"
-
-#plt.rcParams['font.family'] = ['Arial', 'serif']
+plt.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ['New Century Schoolbook'],
+    "font.size": 10,
+})
+matplotlib.rcParams['text.latex.preamble'] = [r'\boldmath']
                   
 def subplot_3D_profile(img, gs0_seg, vmin=0, vmax=75, centre=[31,100,100],
                         spacing=np.array([2, 4, 4]), draw_lines=True,
@@ -193,11 +193,11 @@ def plot_profile_compare(input_sum, target_sum, output_sum, rb_img,
     
     fig.legend([tgt_line, orig_line, rb_line, corr_line], 
                ['No Motion', 'Uncorrected', 'RPB', 'FNP'], 
-               loc=(0.742,0.12), fontsize=fontsize, ncol=1)
+               loc=(0.745,0.1), fontsize=fontsize, ncol=1)
     
     #plt.tight_layout()
     if savename is not None:
-        plt.savefig(savename, transparent=False, dpi=60, bbox_inches='tight', pad_inches=0.05)
+        plt.savefig(savename, transparent=False, dpi=600, bbox_inches='tight', pad_inches=0.05)
 
     if show:
         plt.show()
@@ -406,9 +406,9 @@ def plot_slices2(gt_voi, orig_voi, rb_voi, corr_voi,
         
     small_fontsize = 0.8*fontsize
     # Create outer figure
-    fig = plt.figure(figsize=(16, 7))
+    fig = plt.figure(figsize=(8, 3.5))
     
-    gs = gridspec.GridSpec(2, 29)
+    gs = gridspec.GridSpec(2, 30)
 
     ax1 = plt.subplot(gs[0,:7])
     ax2 = plt.subplot(gs[0,7:14])
@@ -455,7 +455,7 @@ def plot_slices2(gt_voi, orig_voi, rb_voi, corr_voi,
                        left=False, right=False, labelleft=False) 
         ax.set_title(title, fontsize=fontsize)
     # Colobars
-    cax1 = plt.subplot(gs[:,28])
+    cax1 = plt.subplot(gs[:,29])
     ticks = np.array([vmin1, (vmax1-vmin1)/2 + vmin1, vmax1]).astype(int)   
     tick_labels = ticks.astype(str)
     if vmax_frac<1:
@@ -475,9 +475,10 @@ def plot_slices2(gt_voi, orig_voi, rb_voi, corr_voi,
     cb2.ax.tick_params(labelsize=small_fontsize)
     cb2.set_label('Counts', fontsize=fontsize, rotation=90)'''
     
-    plt.tight_layout()
+    plt.subplots_adjust(hspace=0.3, wspace=0.2)
+    #plt.tight_layout(wspace=0)
     if savename is not None:
-        plt.savefig(savename, transparent=True, dpi=60, bbox_inches='tight', pad_inches=0.05)
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
 
     if show:
         plt.show()

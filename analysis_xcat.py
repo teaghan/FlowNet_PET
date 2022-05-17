@@ -3,25 +3,28 @@ import numpy as np
 import torch
 import os
 import h5py
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as lines
 
-#plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
+#plt.rc('font', family='serif', size=10, weight=500)
+#plt.rc("axes", labelweight=500, titleweight=500)
 
-#plt.rcParams["font.family"] = "serif"
-#plt.rcParams["font.serif"] = "Nimbus Roman"
-#plt.rcParams["font.weight"] = "heavy"
-
-#plt.rcParams['font.family'] = ['Arial', 'serif']
+plt.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ['New Century Schoolbook'],
+    "font.size": 10,
+})
+matplotlib.rcParams['text.latex.preamble'] = [r'\boldmath']
 
 def plot_progress(losses, y_lims=[(0,1),(0,100),(0,40),(0,100)], x_lim=(0,1.5e6), 
                   fontsize=18, savename=None):
     
     fontsize_small=0.8*fontsize
     
-    fig = plt.figure(figsize=(9,9))
+    fig = plt.figure(figsize=(7,7))
 
     gs = gridspec.GridSpec(3, 1)
 
@@ -65,7 +68,7 @@ def plot_progress(losses, y_lims=[(0,1),(0,100),(0,40),(0,100)], x_lim=(0,1.5e6)
     plt.tight_layout()
     
     if savename is not None:
-        plt.savefig(savename)
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
         
     plt.show()
     
@@ -365,7 +368,7 @@ def plot_orig_corr(gt_sum, input_sum, output_sum,
     small_fontsize = 0.8*fontsize
     
     # Create outer figure
-    fig = plt.figure(figsize=(21, 7))
+    fig = plt.figure(figsize=(15, 5))
     gs0 = gridspec.GridSpec(4, 52, figure=fig)
     
     # Min and max pixel values for the images
@@ -414,7 +417,7 @@ def plot_orig_corr(gt_sum, input_sum, output_sum,
     ticks = np.array([vmin, (vmax-vmin)/2 + vmin, vmax]).astype(int)   
     tick_labels = ticks.astype(str)
     if vmax_frac<1:
-        tick_labels[-1] = '> '+tick_labels[-1]
+        tick_labels[-1] = '$>$ '+tick_labels[-1]
     cb1 = plt.colorbar(inp_plot, cax=cax1, ticks=ticks)
     cb1.ax.set_yticklabels(tick_labels)
     cb1.ax.tick_params(labelsize=small_fontsize)
@@ -423,8 +426,8 @@ def plot_orig_corr(gt_sum, input_sum, output_sum,
     
     y1 = 0.325
     y2 = 0.25
-    x12s = [[0.042, 0.037], [0.075, 0.108], [0.205, 0.192], [0.24, 0.26]]
-    x_offs = [0, 0.309, 0.618]
+    x12s = [[0.044, 0.033], [0.077, 0.098], [0.207, 0.2], [0.24, 0.267]]
+    x_offs = [0, 0.308, 0.616]
     
     for x_off in x_offs:
         for x12 in x12s:
@@ -432,7 +435,7 @@ def plot_orig_corr(gt_sum, input_sum, output_sum,
 
     plt.tight_layout()
     if savename is not None:
-        plt.savefig(savename, transparent=True, dpi=60, bbox_inches='tight', pad_inches=0.05)
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
 
     if show:
         plt.show()
@@ -499,7 +502,7 @@ def plot_flow_pred(frame1, frame2, pred_flow,
     target_flow*=-1
                     
     # Create outer figure
-    fig = plt.figure(figsize=(12, 4.5))
+    fig = plt.figure(figsize=(8, 3))
     gs0 = gridspec.GridSpec(2, 17, figure=fig)
     
     # Min and max pixel values for the images
@@ -531,20 +534,20 @@ def plot_flow_pred(frame1, frame2, pred_flow,
     ticks = np.array([vmin, (vmax-vmin)/2 + vmin, vmax]).astype(int)   
     tick_labels = ticks.astype(str)
     if vmax_frac<1:
-        tick_labels[-1] = '> '+tick_labels[-1]
+        tick_labels[-1] = '$>$ '+tick_labels[-1]
     cb1 = plt.colorbar(tgt_plot, cax=cax1, ticks=ticks)
     cb1.ax.set_yticklabels(tick_labels)
     cb1.ax.tick_params(labelsize=small_fontsize)
     cb1.set_label('Counts', fontsize=fontsize, rotation=90)
     
     cb2 = plt.colorbar(flow_tgt_plot, cax=cax2, ticks=[flow_min, 0, flow_max])
-    cb2.ax.set_yticklabels(['< %i'%np.round(flow_min), '0', '> %i'%np.round(flow_max)])
+    cb2.ax.set_yticklabels(['$<$ %i'%np.round(flow_min), '0', '$>$ %i'%np.round(flow_max)])
     cb2.ax.tick_params(labelsize=small_fontsize)
     cb2.set_label('Shift (mm)', fontsize=fontsize, rotation=90)
     
     plt.tight_layout()
     if savename is not None:
-        plt.savefig(savename, transparent=True, dpi=60, bbox_inches='tight', pad_inches=0.05)
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
 
     if show:
         plt.show()
@@ -643,7 +646,7 @@ def plot_metric_comparison(x_data, tot_counts_gt,
     plt.tight_layout()
     plt.subplots_adjust(top=0.78)
     if savename is not None:
-        plt.savefig(savename, transparent=True, dpi=60, bbox_inches='tight', pad_inches=0.05)
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
         
     plt.show()
     
@@ -679,16 +682,16 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt,
     iou_diff_corr = iou_corr-iou_gt
     iou_perc_improv = 100*(1-iou_diff_corr / iou_diff_orig) 
 
-    fig = plt.figure(figsize=(7,12))
+    fig = plt.figure(figsize=(7,10))
 
-    gs = gridspec.GridSpec(21, 1)
+    gs = gridspec.GridSpec(24, 1)
 
     ax1 = plt.subplot(gs[:3,0])
-    ax2 = plt.subplot(gs[8:11,0], sharex=ax1)
-    ax3 = plt.subplot(gs[16:19,0], sharex=ax1)
-    ax4 = plt.subplot(gs[3:5,0], sharex=ax1)
-    ax5 = plt.subplot(gs[11:13,0], sharex=ax1)
-    ax6 = plt.subplot(gs[19:,0], sharex=ax1)
+    ax2 = plt.subplot(gs[9:12,0], sharex=ax1)
+    ax3 = plt.subplot(gs[18:21,0], sharex=ax1)
+    ax4 = plt.subplot(gs[3:6,0], sharex=ax1)
+    ax5 = plt.subplot(gs[12:15,0], sharex=ax1)
+    ax6 = plt.subplot(gs[21:,0], sharex=ax1)
     
     ax1.set_title('(a) Intersection over Union', fontsize=fontsize)
     ax1.plot(x_data, iou_gt, c='gray', ls='--')
@@ -707,7 +710,7 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt,
     ax2.set_ylim(*y_lims[1])
     
     if cov:
-        ax3.set_title('(c) Coefficent of Variation', fontsize=fontsize)
+        ax3.set_title('(c) Coefficient of Variation', fontsize=fontsize)
     else:
         ax3.set_title('(c) Signal-to-Noise', fontsize=fontsize)
     ax3.plot(x_data, snr_gt, c='gray', ls='--')
@@ -717,7 +720,7 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt,
     ax3.set_ylim(*y_lims[2])
     
     ax4.scatter(x_data, iou_perc_improv, c='mediumseagreen')
-    ax5.scatter(x_data, cnts_perc_improv, c='mediumseagreen')    
+    improv_dots = ax5.scatter(x_data, cnts_perc_improv, c='mediumseagreen')    
     ax6.scatter(x_data, snr_perc_improv, c='mediumseagreen')
     
     print('Residual Imporvements:')
@@ -739,17 +742,17 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt,
         ax.set_ylim(-5,105)
         ax.set_yticks([0,50,100])
         ax.set_yticklabels(['0','','100'])
-        ax.set_ylabel('Relative\nImprovement\n(%)',fontsize=fontsize)
+        ax.set_ylabel('Improvement\n(\%)',fontsize=fontsize)
         ax.set_xlabel(x_label, fontsize=fontsize)
     
 
-    fig.legend([orig_dots, tgt_line, corr_dots], 
-               ['Uncorrected', 'No Motion', 'FNP Corrected'], 
-               loc=(0.18,0.86), fontsize=fontsize, ncol=2)
+    fig.legend([orig_dots, tgt_line, corr_dots, improv_dots], 
+               ['Uncorrected', 'No Motion', 'FNP Corrected' , 'FNP vs. Uncorrected'], 
+               loc=(0.2,0.86), fontsize=fontsize, ncol=2)
     #plt.tight_layout()
     plt.subplots_adjust(top=0.78, hspace=1)
     if savename is not None:
-        plt.savefig(savename, transparent=True, dpi=60, bbox_inches='tight', pad_inches=0.05)
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
         
     plt.show()
     
@@ -757,7 +760,7 @@ def box_plot_flow_residuals(x_data, max_flow_diffs,
                            y_lims=(0,10), fontsize=14, 
                            x_label='AP Expansion (cm)', savename=None):
 
-    fig = plt.figure(figsize=(8,4))
+    fig = plt.figure(figsize=(6,3))
 
     gs = gridspec.GridSpec(1, 1)
 
@@ -783,6 +786,6 @@ def box_plot_flow_residuals(x_data, max_flow_diffs,
 
     plt.tight_layout()
     if savename is not None:
-        plt.savefig(savename, transparent=True, dpi=60, bbox_inches='tight', pad_inches=0.05)
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
         
     plt.show()
