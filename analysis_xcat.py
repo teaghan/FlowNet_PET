@@ -3,21 +3,16 @@ import numpy as np
 import torch
 import os
 import h5py
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as lines
 
-#plt.rc('font', family='serif', size=10, weight=500)
-#plt.rc("axes", labelweight=500, titleweight=500)
-
 plt.rcParams.update({
     "text.usetex": True,
     "font.family": "serif",
-    "font.serif": ['New Century Schoolbook'],
+    "font.serif": ['Times'],
     "font.size": 10,
 })
-matplotlib.rcParams['text.latex.preamble'] = [r'\boldmath']
 
 def plot_progress(losses, y_lims=[(0,1),(0,100),(0,40),(0,100)], x_lim=(0,1.5e6), 
                   fontsize=18, savename=None):
@@ -426,7 +421,7 @@ def plot_orig_corr(gt_sum, input_sum, output_sum,
     
     y1 = 0.325
     y2 = 0.25
-    x12s = [[0.044, 0.033], [0.077, 0.098], [0.207, 0.2], [0.24, 0.267]]
+    x12s = [[0.045, 0.033], [0.077, 0.098], [0.208, 0.201], [0.24, 0.267]]
     x_offs = [0, 0.308, 0.616]
     
     for x_off in x_offs:
@@ -748,7 +743,7 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt,
 
     fig.legend([orig_dots, tgt_line, corr_dots, improv_dots], 
                ['Uncorrected', 'No Motion', 'FNP Corrected' , 'FNP vs. Uncorrected'], 
-               loc=(0.2,0.86), fontsize=fontsize, ncol=2)
+               loc=(0.15,0.86), fontsize=fontsize, ncol=2)
     #plt.tight_layout()
     plt.subplots_adjust(top=0.78, hspace=1)
     if savename is not None:
@@ -760,7 +755,7 @@ def box_plot_flow_residuals(x_data, max_flow_diffs,
                            y_lims=(0,10), fontsize=14, 
                            x_label='AP Expansion (cm)', savename=None):
 
-    fig = plt.figure(figsize=(6,3))
+    fig = plt.figure(figsize=(8,4))
 
     gs = gridspec.GridSpec(1, 1)
 
@@ -779,10 +774,10 @@ def box_plot_flow_residuals(x_data, max_flow_diffs,
     ax1.set_xlim(x_data[0]- (1.1*x_data[-1] - x_data[-1]), 1.1*x_data[-1])
 
     for element in ['boxes', 'whiskers', 'fliers', 'means', 'medians', 'caps']:
-        plt.setp(bp1[element], color=edge_c, linewidth=2.)
+        plt.setp(bp1[element], color=edge_c, linewidth=2)
 
     for patch in bp1['boxes']:
-        patch.set(facecolor=face_c, linewidth=2.) 
+        patch.set(facecolor=face_c, linewidth=2) 
 
     plt.tight_layout()
     if savename is not None:

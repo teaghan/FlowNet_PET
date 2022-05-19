@@ -3,7 +3,6 @@ import numpy as np
 import torch
 import os
 import h5py
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as lines
@@ -11,10 +10,9 @@ import matplotlib.lines as lines
 plt.rcParams.update({
     "text.usetex": True,
     "font.family": "serif",
-    "font.serif": ['New Century Schoolbook'],
+    "font.serif": ['Times'],
     "font.size": 10,
 })
-matplotlib.rcParams['text.latex.preamble'] = [r'\boldmath']
 
 from scipy.signal import argrelextrema
 
@@ -627,7 +625,7 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt, tot_counts_rb,
 
     fig.legend([orig_dots, rb_dots, corr_dots, tgt_line], 
                ['Uncorrected', 'RPB', 'FNP Corrected', 'No Motion'], 
-               loc=(0.22,0.85), fontsize=fontsize, ncol=2)
+               loc=(0.17,0.85), fontsize=fontsize, ncol=2)
     plt.tight_layout()
     plt.subplots_adjust(top=0.76, hspace=1)
     if savename is not None:

@@ -3,7 +3,6 @@ import numpy as np
 import torch
 import os
 import h5py
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as lines
@@ -11,10 +10,9 @@ import matplotlib.lines as lines
 plt.rcParams.update({
     "text.usetex": True,
     "font.family": "serif",
-    "font.serif": ['New Century Schoolbook'],
+    "font.serif": ['Times'],
     "font.size": 10,
 })
-matplotlib.rcParams['text.latex.preamble'] = [r'\boldmath']
                   
 def subplot_3D_profile(img, gs0_seg, vmin=0, vmax=75, centre=[31,100,100],
                         spacing=np.array([2, 4, 4]), draw_lines=True,
@@ -156,9 +154,9 @@ def plot_profile_compare(input_sum, target_sum, output_sum, rb_img,
     cb1.ax.tick_params(labelsize=small_fontsize)
     cb1.set_label('Counts', fontsize=fontsize)#, rotation=90)
     
-    ax1 = plt.subplot(gs0[18:,3:12])
-    ax2 = plt.subplot(gs0[18:,12:21], sharey=ax1)
-    ax3 = plt.subplot(gs0[18:,21:30], sharey=ax1)
+    ax1 = plt.subplot(gs0[18:,2:11])
+    ax2 = plt.subplot(gs0[18:,11:20], sharey=ax1)
+    ax3 = plt.subplot(gs0[18:,20:29], sharey=ax1)
     
     tgt_line, = ax1.plot(np.arange(0, mm_extent[2], spacing[2]), tgt_x_prof, c='gray', linestyle='--', lw=2)
     orig_line, = ax1.plot(np.arange(0, mm_extent[2], spacing[2]), inp_x_prof, c='k', lw=2.6)
@@ -193,7 +191,7 @@ def plot_profile_compare(input_sum, target_sum, output_sum, rb_img,
     
     fig.legend([tgt_line, orig_line, rb_line, corr_line], 
                ['No Motion', 'Uncorrected', 'RPB', 'FNP'], 
-               loc=(0.745,0.1), fontsize=fontsize, ncol=1)
+               loc=(0.725,0.09), fontsize=fontsize, ncol=1)
     
     #plt.tight_layout()
     if savename is not None:
