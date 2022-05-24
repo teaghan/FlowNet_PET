@@ -2,10 +2,11 @@ import os
 import itertools
 
 # Starting number for jobs
-start_model_num = 107
+start_model_num = 60
 
 # Different parameters to try out
-grid_params = {'ks': [0.7]}
+grid_params = {'ks': [0.8, 0.9], 'ti': [180000], 'n': [15], 
+               'ld': [0.65,0.70,0.75], 'iw': [900,1000,1100], 'lf': [64,128,256]}
 
 # Create a list of all possible parameter combinations
 keys, values = zip(*grid_params.items())
@@ -22,7 +23,7 @@ for params in param_combos:
         else:
             param_cmd += '-%s %s '% (k, params[k])
     #param_cmd = ' '.join(['-%s %s' % (k, params[k]) for k in params])
-    launch_cmd = ('python launch_fn_3D_model.py fn_xcat3D_%i' % (model_num) +
+    launch_cmd = ('python launch_model.py fnp_%i' % (model_num) +
                   ' %s -co "%s"' % (param_cmd, param_cmd))
     print(launch_cmd)
     
