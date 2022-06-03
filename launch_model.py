@@ -64,6 +64,9 @@ def parseArguments():
     parser.add_argument("-iw", "--inv_weight", 
                         help="Loss weight for invertible flow term.", 
                         type=float, default=1000.)
+    parser.add_argument("-pa", "--photo_alpha", 
+                        help="Alpha value for the photometric Charbonnier loss.", 
+                        type=float, default=0.25)
     
     parser.add_argument("-sh", "--input_shape", 
                         help="Shape of input image.", 
@@ -73,7 +76,7 @@ def parseArguments():
                         type=int, default=15)
     parser.add_argument("-ks", "--gauss_sigma", 
                         help="Sigma of the gaussian kernal for blurring.", 
-                        type=float, default=0.9)
+                        type=float, default=0.8)
     parser.add_argument("-cf", "--conv_filts", 
                         help="Number of filters in each layer.", 
                         default=[16,32,64])
@@ -132,14 +135,15 @@ elif user_input=='o':
     config['DATA'] = {'data_file': args.data_file}
 
     config['TRAINING'] = {'batchsize': args.batchsize,
-                      'learning_rate': args.learning_rate,
-                      'lr_decay_batch_iters': args.lr_decay_batch_iters,
-                      'lr_decay': args.lr_decay,
-                      'total_batch_iters': args.total_batch_iters,
-                      'smooth_weight': args.smooth_weight,
-                      'res_weights': args.res_weights,
-                      'l2_weight': args.l2_weight,
-                          'inv_weight': args.inv_weight}
+                          'learning_rate': args.learning_rate,
+                          'lr_decay_batch_iters': args.lr_decay_batch_iters,
+                          'lr_decay': args.lr_decay,
+                          'total_batch_iters': args.total_batch_iters,
+                          'smooth_weight': args.smooth_weight,
+                          'res_weights': args.res_weights,
+                          'l2_weight': args.l2_weight,
+                          'inv_weight': args.inv_weight,
+                          'photo_alpha': args.photo_alpha}
 
     config['ARCHITECTURE'] = {'input_shape': args.input_shape,
                               'gauss_kernel_len': args.gauss_kernel_len,

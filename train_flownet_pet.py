@@ -57,6 +57,7 @@ res_weights = eval(config['TRAINING']['res_weights'])
 l2_weight = float(config['TRAINING']['l2_weight'])
 smooth_weight = float(config['TRAINING']['smooth_weight'])
 inv_weight = float(config['TRAINING']['inv_weight'])
+photo_alpha = float(config['TRAINING']['photo_alpha'])
 
 # Check for pre-trained weights
 model_filename =  os.path.join(model_dir,model_name+'.pth.tar')
@@ -137,7 +138,8 @@ def train_network(model, optimizer, lr_scheduler, cur_iter):
                                                                  res_weights, optimizer,
                                                                  lr_scheduler, losses_cp, cur_iter, 
                                                                  batchsize, mode='train',
-                                                                 sample_weight=train_batch['loss_weight'].to(device))
+                                                                 sample_weight=train_batch['loss_weight'].to(device),
+                                                                photo_alpha=photo_alpha)
             
             #end.record()
             # Waits for everything to finish running
@@ -160,7 +162,8 @@ def train_network(model, optimizer, lr_scheduler, cur_iter):
                                                                              lr_scheduler, losses_cp, 
                                                                              cur_iter, 
                                                                              batchsize, mode='validation',
-                                                                             sample_weight=val_batch['loss_weight'].to(device))
+                                                                             sample_weight=val_batch['loss_weight'].to(device),
+                                                                            photo_alpha=photo_alpha)
 
                     i+=1
                     if i>200:

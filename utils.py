@@ -109,7 +109,9 @@ class XCAT3DDataset(torch.utils.data.Dataset):
             input_img = self.normalize(input_img)
             target_img = self.normalize(target_img)            
 
-        return {'input_img':input_img.unsqueeze(0), 'target_img':target_img.unsqueeze(0), 'loss_weight': loss_weight}
+        return {'input_img':input_img.unsqueeze(0), 
+                'target_img':target_img.unsqueeze(0), 
+                'loss_weight': loss_weight}
 
 def create_normalize(x_mean, x_std):
     
@@ -130,10 +132,10 @@ def smoothness_loss(flow):
     s_loss = charbonnier(flow - v_translated) + charbonnier(flow - h_translated) + charbonnier(flow - u_translated)
     return torch.mean(s_loss)
 
-def photometric_loss(warped, target_img):
+def photometric_loss(warped, target_img, alpha):
     d, h, w = warped.shape[2:]
     target_img = F.interpolate(target_img, (d, h, w), mode='trilinear', align_corners=False)
-    p_loss = charbonnier(warped - target_img)
+    p_loss = charbonnier(warped - target_img, alpha)
     return torch.mean(p_loss)
 
 def inv_loss(flow1, flow2, grid0):
@@ -167,7 +169,7 @@ def inv_loss(flow1, flow2, grid0):
 
 
 def unsup_loss(pred_flows1, warped_imgs, pred_flows2, grids, target_img, smooth_weight, inv_weight,
-               weights=(0.4, 0.6, 0.8, 1.0), sample_weight=1.):
+               weights=(0.4, 0.6, 0.8, 1.0), sample_weight=1., alpha=0.25):
 
     bce_total = 0
     smooth_total = 0
@@ -176,8 +178,11 @@ def unsup_loss(pred_flows1, warped_imgs, pred_flows2, grids, target_img, smooth_
     
     # Loop through the different resolutions
     for w, output_img, flow1, flow2, grid0 in zip(weights, warped_imgs, pred_flows1, pred_flows2, grids):    
-        bce = photometric_loss(output_img, target_img)
-        smooth = smoothness_loss(flow1)
+        bce = photometric_loss(output_img, target_img, alpha)
+        if smooth_weight>0:
+            smooth = smoothness_loss(flow1)
+        else:
+            smooth = 0.
         inv = inv_loss(flow1, flow2, grid0)
         loss += w * (bce + smooth_weight*smooth + sample_weight*inv_weight*inv)
         bce_total += float(bce)
@@ -187,7 +192,8 @@ def unsup_loss(pred_flows1, warped_imgs, pred_flows2, grids, target_img, smooth_
     return loss, bce_total, smooth_total, inv_total
 
 def run_iter(model, input_img, target_img, loss_fnc, smooth_weight, inv_weight, res_weights, optimizer, 
-             lr_scheduler, losses_cp, cur_iter, batchsize, mode='train', sample_weight=1.):
+             lr_scheduler, losses_cp, cur_iter, batchsize, mode='train', sample_weight=1.,
+             photo_alpha=0.25):
     
     if mode=='train':
         model.train()
@@ -202,7 +208,7 @@ def run_iter(model, input_img, target_img, loss_fnc, smooth_weight, inv_weight, 
     loss, bce_loss, smooth_loss, i_loss = loss_fnc(pred_flows1, warped_imgs, pred_flows2, model.grids,
                                                        model.gaussian_blur(target_img), 
                                                        smooth_weight, inv_weight,
-                                                       res_weights, sample_weight)
+                                                       res_weights, sample_weight, photo_alpha)
     
     if mode=='train':        
         # Update the gradients
@@ -380,7 +386,7 @@ def eval_sum(model, val_dataset, device, pat_num=None, return_data=False, AP_exp
             # Compare flow to ground truth
             # only considering pixels that have a ground-truth flow and have activity
             flow_mask = torch.where((gt_flow_masks[i]!=0) & (target_gt>0).repeat(1,3,1,1,1))
-            flow_loss = flow_loss + 1/len(pat_nums) * 1/len(input_imgs) *  float(torch.mean(torch.abs(flow[flow_mask] - 
+            flow_loss = flow_loss + 1/len(pat_nums) * 1/len(input_imgs) *  float(torch.median(torch.abs(flow[flow_mask] - 
                                                                                                       gt_flows[i][flow_mask])))
             # Also compute end-point error
             flow_epe = flow_epe + 1/len(pat_nums) * 1/len(input_imgs) * float(EPE(flow, gt_flows[i], flow_mask))

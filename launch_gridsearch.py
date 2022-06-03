@@ -2,11 +2,10 @@ import os
 import itertools
 
 # Starting number for jobs
-start_model_num = 60
+start_model_num = 69
 
 # Different parameters to try out
-grid_params = {'ks': [0.8, 0.9], 'ti': [180000], 'n': [15], 
-               'ld': [0.65,0.70,0.75], 'iw': [900,1000,1100], 'lf': [64,128,256]}
+grid_params = {'pa': [0.3,0.35,0.4], 'iw': [1100,1200,1300,1400], 'n': [20]}
 
 # Create a list of all possible parameter combinations
 keys, values = zip(*grid_params.items())
