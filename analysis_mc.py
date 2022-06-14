@@ -397,6 +397,63 @@ def find_voi2(img, centre_loc, zyx_len):
     
     return img[start_z:end_z, start_y:end_y, start_x:end_x]
 
+def plot_slices1(gt_voi, orig_voi, rb_voi, corr_voi,
+                 vmax_frac=1., fontsize=18,
+                 show=True, savename=None):
+        
+    small_fontsize = 0.8*fontsize
+    # Create outer figure
+    fig = plt.figure(figsize=(8, 2))
+    
+    gs = gridspec.GridSpec(1, 30)
+
+    ax1 = plt.subplot(gs[0,:7])
+    ax2 = plt.subplot(gs[0,7:14])
+    ax3 = plt.subplot(gs[0,14:21])
+    ax4 = plt.subplot(gs[0,21:28])
+    
+    # Min and max pixel values for the images
+    vmin1 = np.min([gt_voi, orig_voi, rb_voi, corr_voi])
+    vmax1 = np.rint(vmax_frac*np.max([gt_voi, orig_voi, rb_voi, corr_voi]))
+    
+    slice_indx = int(gt_voi.shape[2]/2)
+    
+    # Slices
+    gt_plot1 = ax1.imshow(np.flip(gt_voi[:,:,slice_indx],1), aspect=0.5, origin='lower',
+                        vmin=vmin1, vmax=vmax1, cmap=plt.cm.inferno)
+    orig_plot1 = ax2.imshow(np.flip(orig_voi[:,:,slice_indx],1), aspect=0.5, origin='lower',
+                        vmin=vmin1, vmax=vmax1, cmap=plt.cm.inferno)
+    rb_plot1 = ax3.imshow(np.flip(rb_voi[:,:,slice_indx],1), aspect=0.5, origin='lower',
+                        vmin=vmin1, vmax=vmax1, cmap=plt.cm.inferno)
+    corr_plot1 = ax4.imshow(np.flip(corr_voi[:,:,slice_indx],1), aspect=0.5, origin='lower',
+                        vmin=vmin1, vmax=vmax1, cmap=plt.cm.inferno)
+    
+    
+    for ax, title in zip([ax1, ax2, ax3, ax4],
+                         ['(a) No Motion','(b) Uncorrected','(c) RPB','(d) FNP Corrected']):
+        ax.tick_params(axis='both', which='both',
+                       bottom=False, top=False, labelbottom=False,
+                       left=False, right=False, labelleft=False) 
+        ax.set_title(title, fontsize=fontsize)
+    # Colobars
+    cax1 = plt.subplot(gs[:,29])
+    ticks = np.array([vmin1, (vmax1-vmin1)/2 + vmin1, vmax1]).astype(int)   
+    tick_labels = ticks.astype(str)
+    if vmax_frac<1:
+        tick_labels[-1] = '> '+tick_labels[-1]
+    cb1 = plt.colorbar(gt_plot1, cax=cax1, ticks=ticks)
+    cb1.ax.set_yticklabels(tick_labels)
+    cb1.ax.tick_params(labelsize=small_fontsize)
+    cb1.set_label('Counts', fontsize=fontsize, rotation=90)
+    
+    plt.subplots_adjust(hspace=0.3, wspace=0.2)
+    #plt.tight_layout(wspace=0)
+    if savename is not None:
+        plt.savefig(savename, transparent=True, dpi=600, bbox_inches='tight', pad_inches=0.05)
+
+    if show:
+        plt.show()
+
 def plot_slices2(gt_voi, orig_voi, rb_voi, corr_voi,
                    gt_voi_mc, orig_voi_mc, rb_voi_mc, corr_voi_mc,
                    vmax_frac=1., fontsize=18,

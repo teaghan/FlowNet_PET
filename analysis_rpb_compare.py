@@ -530,7 +530,7 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt, tot_counts_rb,
                            snr_gt, snr_rb, snr_orig, snr_corr, 
                            iou_rb, iou_orig, iou_corr,
                            y_lims=[(0,1.1),(50,100), (0,15)], fontsize=14, 
-                           cov=False,
+                           cov=False, sharex=True,
                            x_label='AP Expansion (cm)', savename=None):
     
     
@@ -570,8 +570,12 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt, tot_counts_rb,
     gs = gridspec.GridSpec(3, 1)
 
     ax1 = plt.subplot(gs[0])
-    ax2 = plt.subplot(gs[1])
-    ax3 = plt.subplot(gs[2])
+    if sharex:
+        ax2 = plt.subplot(gs[1], sharex=ax1)
+        ax3 = plt.subplot(gs[2], sharex=ax1)
+    else:
+        ax2 = plt.subplot(gs[1])
+        ax3 = plt.subplot(gs[2])
     
     ax1.set_title('(a) Intersection over Union', fontsize=fontsize)
     ax1.plot(x_data, iou_gt, c='gray', ls='--')
@@ -617,10 +621,20 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt, tot_counts_rb,
     print('Counts (avg): ', np.round(np.mean(cnts_perc_improv_rb)))
     print('COV: ', np.round(snr_perc_improv_rb))
     print('COV (avg): ', np.round(np.mean(snr_perc_improv_rb)))
-    for i, ax in enumerate([ax1, ax2, ax3]):
-        ax.set_xlabel(x_label, fontsize=fontsize)
-        ax.tick_params(labelsize=0.8*fontsize)
-        ax.grid(True)
+    
+    if sharex:
+        ax3.set_xlabel(x_label, fontsize=fontsize)
+        ax3.tick_params(labelsize=0.8*fontsize)
+        ax3.grid(True)
+        
+        for i, ax in enumerate([ax1, ax2]):
+            ax.tick_params(labelsize=0.8*fontsize, labelbottom=False)
+            ax.grid(True)
+    else:   
+        for i, ax in enumerate([ax1, ax2, ax3]):
+            ax.set_xlabel(x_label, fontsize=fontsize)
+            ax.tick_params(labelsize=0.8*fontsize)
+            ax.grid(True)
     
 
     fig.legend([orig_dots, rb_dots, corr_dots, tgt_line], 

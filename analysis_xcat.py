@@ -650,7 +650,7 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt,
                            snr_gt, snr_orig, snr_corr, 
                            iou_orig, iou_corr,
                            y_lims=[(0,1.1),(50,100), (0,15)], fontsize=14, 
-                           cov=False,
+                           cov=False, sharex=True,
                            x_label='AP Expansion (cm)', savename=None):
     
     
@@ -725,9 +725,11 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt,
     print('Counts (avg): ', np.round(np.mean(cnts_perc_improv)))
     print('COV: ', np.round(snr_perc_improv))
     print('COV (avg): ', np.round(np.mean(snr_perc_improv)))
-    for i, ax in enumerate([ax1, ax2, ax3, ax4, ax5, ax6]):
-        if i<3:
+    for i, ax in enumerate([ax1, ax2, ax3, ax4, ax5, ax6]): 
+        if sharex and i<5:
             ax.tick_params(labelbottom=False) 
+        elif i<3:
+            ax.tick_params(labelbottom=False)
         ax.tick_params(labelsize=0.8*fontsize)
         ax.grid(True)
         if i==1:
@@ -738,7 +740,10 @@ def plot_metric_comparison_vert(x_data, tot_counts_gt,
         ax.set_yticks([0,50,100])
         ax.set_yticklabels(['0','','100'])
         ax.set_ylabel('Improvement\n(\%)',fontsize=fontsize)
-        ax.set_xlabel(x_label, fontsize=fontsize)
+        if sharex:
+            ax6.set_xlabel(x_label, fontsize=fontsize)
+        else:
+            ax.set_xlabel(x_label, fontsize=fontsize)
     
 
     fig.legend([orig_dots, tgt_line, corr_dots, improv_dots], 
